@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import type { ReactNode } from 'react';
 import { Orbitron, JetBrains_Mono } from 'next/font/google';
 import CyberBackground from '@/components/CyberBackground';
 import SiteFooter from '@/components/SiteFooter';
@@ -57,7 +58,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: LayoutProps<'/'>) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={`${orbitron.variable} ${mono.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
