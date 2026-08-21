@@ -1,8 +1,8 @@
-import Link from "next/link";
-import { notFound } from "next/navigation";
-import type { Metadata } from "next";
-import { getChallenge } from "@/lib/challenges";
-import QuestEditor from "@/components/QuestEditor";
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
+import { getChallenge } from '@/lib/challenges';
+import QuestEditor from '@/components/QuestEditor';
 
 export async function generateMetadata({
   params,
@@ -14,7 +14,7 @@ export async function generateMetadata({
   if (!challenge) return {};
 
   const title = `${challenge.title} (${challenge.level})`;
-  const description = `Solve the "${challenge.title}" TypeScript type-challenge: patch the exploit console until strict TypeScript passes. Tags: ${challenge.tags.join(", ")}.`;
+  const description = `Solve the "${challenge.title}" TypeScript type-challenge: patch the exploit console until strict TypeScript passes. Tags: ${challenge.tags.join(', ')}.`;
 
   return {
     title,

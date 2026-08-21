@@ -1,12 +1,12 @@
-import ts from "typescript";
-import libFiles from "./ts-libs.json";
-import { TYPE_UTILS_LIB } from "./type-utils";
+import ts from 'typescript';
+import libFiles from './ts-libs.json';
+import { TYPE_UTILS_LIB } from './type-utils';
 
 const LIBS = libFiles as Record<string, string>;
 
-const USER_FILE = "quest.ts";
-const UTILS_FILE = "type-utils.d.ts";
-const DEFAULT_LIB = "lib.esnext.d.ts";
+const USER_FILE = 'quest.ts';
+const UTILS_FILE = 'type-utils.d.ts';
+const DEFAULT_LIB = 'lib.esnext.d.ts';
 
 const compilerOptions: ts.CompilerOptions = {
   target: ts.ScriptTarget.ESNext,
@@ -19,7 +19,7 @@ const compilerOptions: ts.CompilerOptions = {
 };
 
 function basename(fileName: string): string {
-  const parts = fileName.split("/");
+  const parts = fileName.split('/');
   return parts[parts.length - 1];
 }
 
@@ -44,7 +44,7 @@ function createHost(userSource: string): ts.CompilerHost {
       const text = lookup(fileName);
       if (text === undefined) return undefined;
       const languageVersion =
-        typeof languageVersionOrOptions === "object"
+        typeof languageVersionOrOptions === 'object'
           ? languageVersionOrOptions.languageVersion
           : languageVersionOrOptions;
 
@@ -59,13 +59,13 @@ function createHost(userSource: string): ts.CompilerHost {
     },
     getDefaultLibFileName: () => DEFAULT_LIB,
     writeFile: () => {},
-    getCurrentDirectory: () => "/",
+    getCurrentDirectory: () => '/',
     getDirectories: () => [],
     fileExists: (fileName) => lookup(fileName) !== undefined,
     readFile: (fileName) => lookup(fileName),
     getCanonicalFileName: (fileName) => fileName,
     useCaseSensitiveFileNames: () => true,
-    getNewLine: () => "\n",
+    getNewLine: () => '\n',
   };
 }
 
@@ -97,7 +97,7 @@ export function checkTypeScript(source: string): CheckedDiagnostic[] {
   ];
 
   return diagnostics.map((d) => ({
-    message: ts.flattenDiagnosticMessageText(d.messageText, " "),
+    message: ts.flattenDiagnosticMessageText(d.messageText, ' '),
     line: d.start !== undefined ? sourceFile.getLineAndCharacterOfPosition(d.start).line + 1 : 0,
   }));
 }

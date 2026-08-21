@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { useState } from "react";
-import { CHALLENGES, LEVELS, challengesByLevel } from "@/lib/challenges";
-import { getCompleted, getPoints } from "@/lib/progress";
+import Link from 'next/link';
+import { useState } from 'react';
+import { CHALLENGES, LEVELS, challengesByLevel } from '@/lib/challenges';
+import { getCompleted, getPoints } from '@/lib/progress';
 
 export default function DungeonMap() {
   const [completed] = useState<Set<string>>(() => getCompleted());
   const [points] = useState(() => getPoints());
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
 
   const q = query.trim().toLowerCase();
 
@@ -22,7 +22,7 @@ export default function DungeonMap() {
           Neon Cyber-Cat // Root Access
         </p>
         <p className="mt-6 text-[var(--foreground)]/80 max-w-xl mx-auto leading-relaxed">
-          Corporate servers run on rotten{" "}
+          Corporate servers run on rotten{' '}
           <span className="text-[var(--glitch-red)] glow-glitch">any</span> code. A cyber-cat hacker
           jacks into the mainframe, swapping every broken function for strict TypeScript types
           before the firewall reboots.
@@ -54,7 +54,7 @@ export default function DungeonMap() {
                 {level.name}
               </h2>
               <p className="text-xs text-[var(--foreground)]/50 mb-4">
-                {level.desc} • {list.length} target{list.length === 1 ? "" : "s"}
+                {level.desc} • {list.length} target{list.length === 1 ? '' : 's'}
               </p>
               <ul className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
                 {list.map((c) => {
@@ -72,11 +72,11 @@ export default function DungeonMap() {
                         <span
                           className={
                             done
-                              ? "text-[var(--neon-cyan)] glow-cyan text-lg shrink-0"
-                              : "text-[var(--foreground)]/25 text-lg shrink-0"
+                              ? 'text-[var(--neon-cyan)] glow-cyan text-lg shrink-0'
+                              : 'text-[var(--foreground)]/25 text-lg shrink-0'
                           }
                         >
-                          {done ? "◉" : "○"}
+                          {done ? '◉' : '○'}
                         </span>
                       </Link>
                     </li>

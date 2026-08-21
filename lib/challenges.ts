@@ -1,6 +1,6 @@
-import raw from "./generated-challenges.json";
+import raw from './generated-challenges.json';
 
-export type Level = "warmup" | "easy" | "medium" | "hard" | "extreme";
+export type Level = 'warmup' | 'easy' | 'medium' | 'hard' | 'extreme';
 
 export interface Challenge {
   id: number;
@@ -14,11 +14,11 @@ export interface Challenge {
 }
 
 export const LEVELS: { id: Level; name: string; desc: string }[] = [
-  { id: "warmup", name: "Access Terminal", desc: "First exploits" },
-  { id: "easy", name: "Corporate Firewall", desc: "Basic patches" },
-  { id: "medium", name: "Data Vaults", desc: "Refactors and transforms" },
-  { id: "hard", name: "The Deep Net", desc: "Recursive exploits" },
-  { id: "extreme", name: "Mainframe Core", desc: "Forbidden root access" },
+  { id: 'warmup', name: 'Access Terminal', desc: 'First exploits' },
+  { id: 'easy', name: 'Corporate Firewall', desc: 'Basic patches' },
+  { id: 'medium', name: 'Data Vaults', desc: 'Refactors and transforms' },
+  { id: 'hard', name: 'The Deep Net', desc: 'Recursive exploits' },
+  { id: 'extreme', name: 'Mainframe Core', desc: 'Forbidden root access' },
 ];
 
 export const CHALLENGES = raw as Challenge[];

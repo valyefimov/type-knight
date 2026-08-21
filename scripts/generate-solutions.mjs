@@ -7,27 +7,27 @@
 //   git clone --depth 1 https://github.com/ghaiklor/type-challenges-solutions.git /tmp/tcs
 //   node scripts/generate-solutions.mjs /tmp/tcs
 
-import fs from "node:fs";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const repoPath = process.argv[2];
 if (!repoPath) {
-  console.error("Usage: node scripts/generate-solutions.mjs <path-to-type-challenges-solutions>");
+  console.error('Usage: node scripts/generate-solutions.mjs <path-to-type-challenges-solutions>');
   process.exit(1);
 }
 
-const EN_DIR = path.join(repoPath, "en");
-const OUT = path.join(__dirname, "..", "lib", "generated-solutions.json");
+const EN_DIR = path.join(repoPath, 'en');
+const OUT = path.join(__dirname, '..', 'lib', 'generated-solutions.json');
 
 function parseFrontmatter(raw) {
   const match = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
   if (!match) return null;
   const [, fm, body] = match;
   const data = {};
-  for (const line of fm.split("\n")) {
+  for (const line of fm.split('\n')) {
     const m = line.match(/^(\w+):\s*(.+)$/);
     if (m) data[m[1]] = m[2].trim();
   }
@@ -36,7 +36,7 @@ function parseFrontmatter(raw) {
 
 function extractSection(body, heading, nextHeadings) {
   const startIdx = body.indexOf(`## ${heading}`);
-  if (startIdx === -1) return "";
+  if (startIdx === -1) return '';
   let endIdx = body.length;
   for (const next of nextHeadings) {
     const idx = body.indexOf(`## ${next}`, startIdx + 1);
@@ -68,19 +68,19 @@ function extractSolutionCode(solutionSection) {
     }
   });
   const keepIdx = new Set([...lastBlockForName.values(), ...anonymousIdx]);
-  return blocks.filter((_, idx) => keepIdx.has(idx)).join("\n\n");
+  return blocks.filter((_, idx) => keepIdx.has(idx)).join('\n\n');
 }
 
-const files = fs.readdirSync(EN_DIR).filter((f) => f.endsWith(".md"));
+const files = fs.readdirSync(EN_DIR).filter((f) => f.endsWith('.md'));
 const solutions = {};
 
 for (const file of files) {
-  const raw = fs.readFileSync(path.join(EN_DIR, file), "utf8");
+  const raw = fs.readFileSync(path.join(EN_DIR, file), 'utf8');
   const parsed = parseFrontmatter(raw);
   if (!parsed || !parsed.id) continue;
 
-  const approach = extractSection(parsed.body, "Solution", ["References"]);
-  const references = extractSection(parsed.body, "References", []);
+  const approach = extractSection(parsed.body, 'Solution', ['References']);
+  const references = extractSection(parsed.body, 'References', []);
   const solutionCode = extractSolutionCode(approach);
 
   if (!approach) continue;

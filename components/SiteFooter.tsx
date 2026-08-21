@@ -1,9 +1,9 @@
-import pkg from "@/package.json";
+import pkg from '@/package.json';
 
 export default function SiteFooter() {
   return (
     <footer className="border-t border-[var(--neon-cyan)]/15 px-4 py-4 text-center text-xs text-[var(--foreground)]/40">
-      Created by{" "}
+      Created by{' '}
       <a
         href="https://github.com/valyefimov"
         target="_blank"
@@ -12,7 +12,7 @@ export default function SiteFooter() {
       >
         Valentyn Yefimov
       </a>
-      . Open source on{" "}
+      . Open source on{' '}
       <a
         href="https://github.com/valyefimov/type-knight"
         target="_blank"

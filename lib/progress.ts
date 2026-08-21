@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-const COMPLETED_KEY = "typeknight-completed";
-const POINTS_KEY = "typeknight-points";
+const COMPLETED_KEY = 'typeknight-completed';
+const POINTS_KEY = 'typeknight-points';
 
 export function getCompleted(): Set<string> {
-  if (typeof window === "undefined") return new Set();
+  if (typeof window === 'undefined') return new Set();
   try {
     const raw = window.localStorage.getItem(COMPLETED_KEY);
     return new Set(raw ? (JSON.parse(raw) as string[]) : []);
@@ -21,7 +21,7 @@ export function markCompleted(id: string) {
 }
 
 export function getPoints(): number {
-  if (typeof window === "undefined") return 0;
+  if (typeof window === 'undefined') return 0;
   const raw = window.localStorage.getItem(POINTS_KEY);
   return raw ? Number(raw) : 0;
 }

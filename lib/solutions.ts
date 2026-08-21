@@ -1,4 +1,4 @@
-import raw from "./generated-solutions.json";
+import raw from './generated-solutions.json';
 
 export interface SolutionWalkthrough {
   approach: string;
@@ -13,4 +13,4 @@ export function getSolution(id: number): SolutionWalkthrough | null {
 }
 
 // Attribution required by CC-BY-4.0.
-export const SOLUTIONS_SOURCE_URL = "https://github.com/ghaiklor/type-challenges-solutions";
+export const SOLUTIONS_SOURCE_URL = 'https://github.com/ghaiklor/type-challenges-solutions';

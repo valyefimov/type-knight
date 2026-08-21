@@ -1,35 +1,35 @@
-"use client";
+'use client';
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import dynamic from "next/dynamic";
-import { marked } from "marked";
-import hljs from "highlight.js/lib/core";
-import typescript from "highlight.js/lib/languages/typescript";
-import type { editor as MonacoEditorNS } from "monaco-editor";
-import Link from "next/link";
-import type { Challenge } from "@/lib/challenges";
-import { editorSource, solutionsUrl, nextChallenge } from "@/lib/challenges";
-import { TYPE_UTILS_LIB } from "@/lib/type-utils";
-import { checkTypeScript } from "@/lib/type-checker";
-import { addPoints, markCompleted } from "@/lib/progress";
-import { getSolution, SOLUTIONS_SOURCE_URL } from "@/lib/solutions";
+import { useEffect, useMemo, useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
+import { marked } from 'marked';
+import hljs from 'highlight.js/lib/core';
+import typescript from 'highlight.js/lib/languages/typescript';
+import type { editor as MonacoEditorNS } from 'monaco-editor';
+import Link from 'next/link';
+import type { Challenge } from '@/lib/challenges';
+import { editorSource, solutionsUrl, nextChallenge } from '@/lib/challenges';
+import { TYPE_UTILS_LIB } from '@/lib/type-utils';
+import { checkTypeScript } from '@/lib/type-checker';
+import { addPoints, markCompleted } from '@/lib/progress';
+import { getSolution, SOLUTIONS_SOURCE_URL } from '@/lib/solutions';
 
 const MOTIVATIONS = [
-  "The mainframe never saw it coming.",
-  "Another firewall down. The corps are sweating.",
-  "Clean exploit. No trace left behind.",
-  "Your type-fu is getting sharper by the byte.",
+  'The mainframe never saw it coming.',
+  'Another firewall down. The corps are sweating.',
+  'Clean exploit. No trace left behind.',
+  'Your type-fu is getting sharper by the byte.',
   "That's how a real netrunner patches code.",
-  "System owned. On to the next server.",
-  "Flawless injection. The cat approves.",
-  "You just made `any` extinct in one more file.",
+  'System owned. On to the next server.',
+  'Flawless injection. The cat approves.',
+  'You just made `any` extinct in one more file.',
 ];
 
 const HINT_TIER_COST = [0, 3, 8];
 
-const Editor = dynamic(() => import("@monaco-editor/react"), { ssr: false });
+const Editor = dynamic(() => import('@monaco-editor/react'), { ssr: false });
 
-type Status = "idle" | "checking" | "pass" | "fail";
+type Status = 'idle' | 'checking' | 'pass' | 'fail';
 
 interface FlatDiagnostic {
   message: string;
@@ -40,12 +40,12 @@ let libRegistered = false;
 let compilerOptionsSet = false;
 let hljsRegistered = false;
 if (!hljsRegistered) {
-  hljs.registerLanguage("typescript", typescript);
-  hljs.registerLanguage("ts", typescript);
+  hljs.registerLanguage('typescript', typescript);
+  hljs.registerLanguage('ts', typescript);
   marked.use({
     renderer: {
       code({ text, lang }) {
-        const language = lang && hljs.getLanguage(lang) ? lang : "typescript";
+        const language = lang && hljs.getLanguage(lang) ? lang : 'typescript';
         const highlighted = hljs.highlight(text, { language }).value;
         return `<pre class="hljs"><code>${highlighted}</code></pre>`;
       },
@@ -56,7 +56,7 @@ if (!hljsRegistered) {
 
 export default function QuestEditor({ challenge }: { challenge: Challenge }) {
   const [code, setCode] = useState(() => editorSource(challenge));
-  const [status, setStatus] = useState<Status>("idle");
+  const [status, setStatus] = useState<Status>('idle');
   const [diagnostics, setDiagnostics] = useState<FlatDiagnostic[]>([]);
   const [hintTier, setHintTier] = useState(0);
   const [liveErrors, setLiveErrors] = useState<number | null>(null);
@@ -75,17 +75,17 @@ export default function QuestEditor({ challenge }: { challenge: Challenge }) {
   const next = useMemo(() => nextChallenge(challenge), [challenge]);
 
   const descriptionHtml = useMemo(
-    () => marked.parse(challenge.description || "", { async: false }) as string,
+    () => marked.parse(challenge.description || '', { async: false }) as string,
     [challenge.description]
   );
 
   const solution = useMemo(() => getSolution(challenge.id), [challenge.id]);
   const approachHtml = useMemo(
-    () => (solution ? (marked.parse(solution.approach, { async: false }) as string) : ""),
+    () => (solution ? (marked.parse(solution.approach, { async: false }) as string) : ''),
     [solution]
   );
   const solutionCodeHtml = useMemo(
-    () => (solution ? hljs.highlight(solution.solutionCode, { language: "typescript" }).value : ""),
+    () => (solution ? hljs.highlight(solution.solutionCode, { language: 'typescript' }).value : ''),
     [solution]
   );
 
@@ -96,13 +96,13 @@ export default function QuestEditor({ challenge }: { challenge: Challenge }) {
       return {
         x: Math.cos(angle) * dist,
         y: Math.sin(angle) * dist,
-        color: i % 2 === 0 ? "var(--neon-cyan)" : "var(--neon-pink)",
+        color: i % 2 === 0 ? 'var(--neon-cyan)' : 'var(--neon-pink)',
         delay: Math.random() * 0.15,
       };
     });
   }
 
-  function handleEditorWillMount(monaco: typeof import("monaco-editor")) {
+  function handleEditorWillMount(monaco: typeof import('monaco-editor')) {
     // Cosmetic only (inline red squiggles) - the authoritative pass/fail
     // check below runs its own independent, synchronous type checker rather
     // than depending on Monaco's web worker, which has proven unreliable in
@@ -116,14 +116,14 @@ export default function QuestEditor({ challenge }: { challenge: Challenge }) {
         strict: true,
         noEmit: true,
         skipLibCheck: true,
-        lib: ["esnext"],
+        lib: ['esnext'],
       });
       compilerOptionsSet = true;
     }
     if (!libRegistered) {
       monaco.languages.typescript.typescriptDefaults.addExtraLib(
         TYPE_UTILS_LIB,
-        "ts:type-utils.d.ts"
+        'ts:type-utils.d.ts'
       );
       libRegistered = true;
     }
@@ -143,11 +143,11 @@ export default function QuestEditor({ challenge }: { challenge: Challenge }) {
   }, [code]);
 
   function runCheck() {
-    setStatus("checking");
+    setStatus('checking');
     const errors = checkTypeScript(code);
 
     if (errors.length === 0) {
-      setStatus("pass");
+      setStatus('pass');
       setDiagnostics([]);
       markCompleted(challenge.slug);
       const credits = awardedRef.current ? 0 : Math.max(10 - HINT_TIER_COST[hintTier], 2);
@@ -161,7 +161,7 @@ export default function QuestEditor({ challenge }: { challenge: Challenge }) {
         sparks: makeSparks(),
       });
     } else {
-      setStatus("fail");
+      setStatus('fail');
       setDiagnostics(errors);
     }
   }
@@ -192,7 +192,7 @@ export default function QuestEditor({ challenge }: { challenge: Challenge }) {
         </div>
 
         <div className="neon-panel rounded-lg overflow-hidden relative">
-          {status === "pass" && <div className="neon-sweep absolute inset-0 pointer-events-none" />}
+          {status === 'pass' && <div className="neon-sweep absolute inset-0 pointer-events-none" />}
           <div className="border-b border-[var(--neon-cyan)]/20 px-4 py-3 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <h3 className="font-display text-sm uppercase tracking-widest text-[var(--neon-cyan)] glow-cyan">
@@ -202,22 +202,22 @@ export default function QuestEditor({ challenge }: { challenge: Challenge }) {
                 <span
                   className={
                     liveErrors > 0
-                      ? "text-[10px] uppercase tracking-wide text-[var(--glitch-red)] glow-glitch"
-                      : "text-[10px] uppercase tracking-wide text-[var(--neon-cyan)] glow-cyan"
+                      ? 'text-[10px] uppercase tracking-wide text-[var(--glitch-red)] glow-glitch'
+                      : 'text-[10px] uppercase tracking-wide text-[var(--neon-cyan)] glow-cyan'
                   }
                 >
                   {liveErrors > 0
-                    ? `${liveErrors} type error${liveErrors === 1 ? "" : "s"}`
-                    : "clean"}
+                    ? `${liveErrors} type error${liveErrors === 1 ? '' : 's'}`
+                    : 'clean'}
                 </span>
               )}
             </div>
             <button
               onClick={runCheck}
-              disabled={status === "checking"}
+              disabled={status === 'checking'}
               className="text-sm font-display uppercase tracking-wider px-4 py-1.5 rounded border border-[var(--neon-pink)]/50 text-[var(--neon-pink)] hover:bg-[var(--neon-pink)]/10 disabled:opacity-50"
             >
-              {status === "checking" ? "Compiling..." : "Run Exploit"}
+              {status === 'checking' ? 'Compiling...' : 'Run Exploit'}
             </button>
           </div>
           <Editor
@@ -225,11 +225,11 @@ export default function QuestEditor({ challenge }: { challenge: Challenge }) {
             defaultLanguage="typescript"
             theme="vs-dark"
             value={code}
-            onChange={(v) => setCode(v ?? "")}
+            onChange={(v) => setCode(v ?? '')}
             beforeMount={handleEditorWillMount}
             onMount={handleEditorMount}
             options={{
-              fontFamily: "var(--font-mono)",
+              fontFamily: 'var(--font-mono)',
               fontSize: 14,
               minimap: { enabled: false },
               scrollBeyondLastLine: false,
@@ -238,25 +238,25 @@ export default function QuestEditor({ challenge }: { challenge: Challenge }) {
           <div className="border-t border-[var(--neon-cyan)]/20 px-4 py-3 min-h-[64px] flex items-start gap-3">
             <span
               className={
-                status === "pass"
-                  ? "cat-mascot cat-swipe"
-                  : status === "fail"
-                    ? "cat-mascot cat-glitch"
-                    : status === "checking"
-                      ? "cat-mascot cat-alert"
-                      : "cat-mascot cat-idle"
+                status === 'pass'
+                  ? 'cat-mascot cat-swipe'
+                  : status === 'fail'
+                    ? 'cat-mascot cat-glitch'
+                    : status === 'checking'
+                      ? 'cat-mascot cat-alert'
+                      : 'cat-mascot cat-idle'
               }
               aria-hidden
             >
               🐱
             </span>
             <div className="flex-1">
-              {status === "pass" && (
+              {status === 'pass' && (
                 <p className="text-[var(--neon-cyan)] glow-cyan font-display">
                   ⚡ Patch injected. The cyber-cat swipes the bug off the desk.
                 </p>
               )}
-              {status === "fail" && (
+              {status === 'fail' && (
                 <ul className="space-y-1 text-sm text-[var(--glitch-red)]">
                   {diagnostics.map((d, i) => (
                     <li key={i} className="glow-glitch">
@@ -265,7 +265,7 @@ export default function QuestEditor({ challenge }: { challenge: Challenge }) {
                   ))}
                 </ul>
               )}
-              {status === "idle" && (
+              {status === 'idle' && (
                 <p className="text-[var(--foreground)]/40 text-sm italic">
                   Awaiting patch. The firewall won&apos;t hold forever.
                 </p>
@@ -304,9 +304,9 @@ export default function QuestEditor({ challenge }: { challenge: Challenge }) {
               disabled={!solution}
               className="w-full text-left text-xs px-3 py-2 rounded border border-[var(--neon-cyan)]/20 text-[var(--foreground)]/60 hover:border-[var(--neon-pink)]/50 hover:text-[var(--neon-pink)] disabled:opacity-30 disabled:hover:border-[var(--neon-cyan)]/20 disabled:hover:text-[var(--foreground)]/60"
             >
-              Tier 1 · Decrypt approach{" "}
+              Tier 1 · Decrypt approach{' '}
               <span className="text-[var(--foreground)]/40">
-                {solution ? `(-${HINT_TIER_COST[1]} credits)` : "(no intel logged)"}
+                {solution ? `(-${HINT_TIER_COST[1]} credits)` : '(no intel logged)'}
               </span>
             </button>
           )}
@@ -323,7 +323,7 @@ export default function QuestEditor({ challenge }: { challenge: Challenge }) {
                     dangerouslySetInnerHTML={{ __html: solutionCodeHtml }}
                   />
                   <p className="text-[10px] text-[var(--foreground)]/40 mt-2">
-                    Walkthrough sourced from{" "}
+                    Walkthrough sourced from{' '}
                     <a
                       href={SOLUTIONS_SOURCE_URL}
                       target="_blank"
@@ -331,7 +331,7 @@ export default function QuestEditor({ challenge }: { challenge: Challenge }) {
                       className="text-[var(--neon-cyan)]/70 hover:text-[var(--neon-pink)] underline"
                     >
                       ghaiklor/type-challenges-solutions
-                    </a>{" "}
+                    </a>{' '}
                     (CC-BY-4.0).
                   </p>
                 </div>
@@ -340,7 +340,7 @@ export default function QuestEditor({ challenge }: { challenge: Challenge }) {
                   onClick={() => setHintTier(2)}
                   className="w-full text-left text-xs px-3 py-2 rounded border border-[var(--neon-cyan)]/20 text-[var(--foreground)]/60 hover:border-[var(--neon-pink)]/50 hover:text-[var(--neon-pink)]"
                 >
-                  Tier 2 · Dump solution code{" "}
+                  Tier 2 · Dump solution code{' '}
                   <span className="text-[var(--foreground)]/40">
                     (-{HINT_TIER_COST[2] - HINT_TIER_COST[1]} more credits)
                   </span>
@@ -369,9 +369,9 @@ export default function QuestEditor({ challenge }: { challenge: Challenge }) {
                 className="spark"
                 style={
                   {
-                    "--spark-x": `${s.x}px`,
-                    "--spark-y": `${s.y}px`,
-                    "--spark-color": s.color,
+                    '--spark-x': `${s.x}px`,
+                    '--spark-y': `${s.y}px`,
+                    '--spark-color': s.color,
                     animationDelay: `${s.delay}s`,
                   } as React.CSSProperties
                 }
@@ -383,7 +383,7 @@ export default function QuestEditor({ challenge }: { challenge: Challenge }) {
             <p className="credit-pop font-display text-3xl text-[var(--neon-pink)] glow-pink mb-3">
               {celebration.credits > 0
                 ? `+${celebration.credits} credits`
-                : "already cracked - no extra credits"}
+                : 'already cracked - no extra credits'}
             </p>
             <p className="text-sm text-[var(--foreground)]/80 italic mb-5">{celebration.message}</p>
             <div className="flex items-center justify-center gap-3 flex-wrap">

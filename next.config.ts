@@ -1,4 +1,4 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   // @monaco-editor/react creates a Monaco model on mount; React Strict Mode's

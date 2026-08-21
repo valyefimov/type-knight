@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
 interface Particle {
   x: number;
   y: number;
   vx: number;
   vy: number;
-  hue: "pink" | "cyan" | "purple";
+  hue: 'pink' | 'cyan' | 'purple';
 }
 
 const COLORS = {
-  pink: "255, 62, 200",
-  cyan: "53, 240, 224",
-  purple: "168, 85, 247",
+  pink: '255, 62, 200',
+  cyan: '53, 240, 224',
+  purple: '168, 85, 247',
 };
 
 export default function CyberBackground() {
@@ -22,10 +22,10 @@ export default function CyberBackground() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     let width = 0;
     let height = 0;
@@ -44,7 +44,7 @@ export default function CyberBackground() {
         y: Math.random() * height,
         vx: (Math.random() - 0.5) * 0.25,
         vy: (Math.random() - 0.5) * 0.25,
-        hue: (["pink", "cyan", "purple"] as const)[Math.floor(Math.random() * 3)],
+        hue: (['pink', 'cyan', 'purple'] as const)[Math.floor(Math.random() * 3)],
       }));
     }
 
@@ -93,7 +93,7 @@ export default function CyberBackground() {
     }
 
     resize();
-    window.addEventListener("resize", resize);
+    window.addEventListener('resize', resize);
 
     if (reduceMotion) {
       step();
@@ -102,7 +102,7 @@ export default function CyberBackground() {
     }
 
     return () => {
-      window.removeEventListener("resize", resize);
+      window.removeEventListener('resize', resize);
       cancelAnimationFrame(rafId);
     };
   }, []);

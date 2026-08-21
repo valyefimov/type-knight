@@ -5,13 +5,13 @@
 //
 // Usage: node scripts/generate-ts-libs.mjs
 
-import fs from "node:fs";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const LIB_DIR = path.join(__dirname, "..", "node_modules", "typescript", "lib");
-const OUT = path.join(__dirname, "..", "lib", "ts-libs.json");
+const LIB_DIR = path.join(__dirname, '..', 'node_modules', 'typescript', 'lib');
+const OUT = path.join(__dirname, '..', 'lib', 'ts-libs.json');
 
 const files = fs
   .readdirSync(LIB_DIR)
@@ -21,7 +21,7 @@ const files = fs
 
 const bundle = {};
 for (const file of files) {
-  bundle[file] = fs.readFileSync(path.join(LIB_DIR, file), "utf8");
+  bundle[file] = fs.readFileSync(path.join(LIB_DIR, file), 'utf8');
 }
 
 fs.writeFileSync(OUT, JSON.stringify(bundle));
