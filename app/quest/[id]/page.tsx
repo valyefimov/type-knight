@@ -34,6 +34,7 @@ export default async function QuestPage({ params }: { params: Promise<{ id: stri
     <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-10 py-10">
       <Link
         href="/"
+        data-testid="disconnect-link"
         className="text-xs text-[var(--neon-cyan)]/70 hover:text-[var(--neon-pink)] font-display uppercase tracking-widest"
       >
         ← Disconnect

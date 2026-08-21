@@ -27,14 +27,18 @@ export default function DungeonMap() {
           jacks into the mainframe, swapping every broken function for strict TypeScript types
           before the firewall reboots.
         </p>
-        <div className="mt-4 inline-flex items-center gap-2 text-xs text-[var(--neon-cyan)] font-display tracking-widest uppercase">
-          <span>
+        <div
+          data-testid="progress-stats"
+          className="mt-4 inline-flex items-center gap-2 text-xs text-[var(--neon-cyan)] font-display tracking-widest uppercase"
+        >
+          <span data-testid="cracked-count">
             Cracked {completed.size}/{CHALLENGES.length}
           </span>
           <span className="text-[var(--foreground)]/30">•</span>
-          <span>{points} credits</span>
+          <span data-testid="credits-count">{points} credits</span>
         </div>
         <input
+          data-testid="challenge-search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="grep exploit..."
@@ -63,6 +67,8 @@ export default function DungeonMap() {
                     <li key={c.slug}>
                       <Link
                         href={`/quest/${c.slug}`}
+                        data-testid="challenge-card"
+                        data-slug={c.slug}
                         className="cyber-card flex items-center justify-between gap-3 rounded-md border border-[var(--neon-cyan)]/20 bg-black/30 px-3 py-2 hover:border-[var(--neon-pink)]/60 hover:bg-black/50 hover:-translate-y-0.5 hover:shadow-[0_0_16px_rgba(255,62,200,0.25)] transition-all duration-150"
                       >
                         <span className="text-sm truncate">

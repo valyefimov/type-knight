@@ -200,6 +200,7 @@ export default function QuestEditor({ challenge }: { challenge: Challenge }) {
               </h3>
               {liveErrors !== null && (
                 <span
+                  data-testid="live-error-badge"
                   className={
                     liveErrors > 0
                       ? 'text-[10px] uppercase tracking-wide text-[var(--glitch-red)] glow-glitch'
@@ -213,6 +214,7 @@ export default function QuestEditor({ challenge }: { challenge: Challenge }) {
               )}
             </div>
             <button
+              data-testid="run-exploit-button"
               onClick={runCheck}
               disabled={status === 'checking'}
               className="text-sm font-display uppercase tracking-wider px-4 py-1.5 rounded border border-[var(--neon-pink)]/50 text-[var(--neon-pink)] hover:bg-[var(--neon-pink)]/10 disabled:opacity-50"
@@ -220,22 +222,28 @@ export default function QuestEditor({ challenge }: { challenge: Challenge }) {
               {status === 'checking' ? 'Compiling...' : 'Run Exploit'}
             </button>
           </div>
-          <Editor
-            height="480px"
-            defaultLanguage="typescript"
-            theme="vs-dark"
-            value={code}
-            onChange={(v) => setCode(v ?? '')}
-            beforeMount={handleEditorWillMount}
-            onMount={handleEditorMount}
-            options={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: 14,
-              minimap: { enabled: false },
-              scrollBeyondLastLine: false,
-            }}
-          />
-          <div className="border-t border-[var(--neon-cyan)]/20 px-4 py-3 min-h-[64px] flex items-start gap-3">
+          <div data-testid="monaco-editor-container">
+            <Editor
+              height="480px"
+              defaultLanguage="typescript"
+              theme="vs-dark"
+              value={code}
+              onChange={(v) => setCode(v ?? '')}
+              beforeMount={handleEditorWillMount}
+              onMount={handleEditorMount}
+              options={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: 14,
+                minimap: { enabled: false },
+                scrollBeyondLastLine: false,
+              }}
+            />
+          </div>
+          <div
+            data-testid="exploit-status"
+            data-status={status}
+            className="border-t border-[var(--neon-cyan)]/20 px-4 py-3 min-h-[64px] flex items-start gap-3"
+          >
             <span
               className={
                 status === 'pass'
@@ -252,14 +260,20 @@ export default function QuestEditor({ challenge }: { challenge: Challenge }) {
             </span>
             <div className="flex-1">
               {status === 'pass' && (
-                <p className="text-[var(--neon-cyan)] glow-cyan font-display">
+                <p
+                  data-testid="pass-message"
+                  className="text-[var(--neon-cyan)] glow-cyan font-display"
+                >
                   ⚡ Patch injected. The cyber-cat swipes the bug off the desk.
                 </p>
               )}
               {status === 'fail' && (
-                <ul className="space-y-1 text-sm text-[var(--glitch-red)]">
+                <ul
+                  data-testid="diagnostics-list"
+                  className="space-y-1 text-sm text-[var(--glitch-red)]"
+                >
                   {diagnostics.map((d, i) => (
-                    <li key={i} className="glow-glitch">
+                    <li key={i} data-testid="diagnostic-item" className="glow-glitch">
                       line {d.line}: {d.message}
                     </li>
                   ))}
@@ -281,6 +295,7 @@ export default function QuestEditor({ challenge }: { challenge: Challenge }) {
         </h3>
 
         <a
+          data-testid="handbook-link"
           href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html"
           target="_blank"
           rel="noreferrer"
@@ -295,11 +310,15 @@ export default function QuestEditor({ challenge }: { challenge: Challenge }) {
           </p>
 
           {hintTier >= 1 && solution ? (
-            <div className="text-xs text-[var(--foreground)]/80 leading-relaxed space-y-2 [&_a]:text-[var(--neon-cyan)] [&_a]:underline [&_code]:text-[var(--neon-cyan)] [&_pre]:my-2 [&_pre]:bg-black/40 [&_pre]:p-2 [&_pre]:rounded [&_pre]:overflow-x-auto [&_pre]:text-[11px]">
+            <div
+              data-testid="hint-approach"
+              className="text-xs text-[var(--foreground)]/80 leading-relaxed space-y-2 [&_a]:text-[var(--neon-cyan)] [&_a]:underline [&_code]:text-[var(--neon-cyan)] [&_pre]:my-2 [&_pre]:bg-black/40 [&_pre]:p-2 [&_pre]:rounded [&_pre]:overflow-x-auto [&_pre]:text-[11px]"
+            >
               <div dangerouslySetInnerHTML={{ __html: approachHtml }} />
             </div>
           ) : (
             <button
+              data-testid="hint-tier-1-button"
               onClick={() => setHintTier(1)}
               disabled={!solution}
               className="w-full text-left text-xs px-3 py-2 rounded border border-[var(--neon-cyan)]/20 text-[var(--foreground)]/60 hover:border-[var(--neon-pink)]/50 hover:text-[var(--neon-pink)] disabled:opacity-30 disabled:hover:border-[var(--neon-cyan)]/20 disabled:hover:text-[var(--foreground)]/60"
@@ -314,7 +333,7 @@ export default function QuestEditor({ challenge }: { challenge: Challenge }) {
           {hintTier >= 1 && solution && (
             <>
               {hintTier >= 2 ? (
-                <div>
+                <div data-testid="hint-solution-code">
                   <p className="text-[10px] uppercase tracking-widest text-[var(--foreground)]/40 mb-1">
                     Solution code
                   </p>
@@ -337,6 +356,7 @@ export default function QuestEditor({ challenge }: { challenge: Challenge }) {
                 </div>
               ) : (
                 <button
+                  data-testid="hint-tier-2-button"
                   onClick={() => setHintTier(2)}
                   className="w-full text-left text-xs px-3 py-2 rounded border border-[var(--neon-cyan)]/20 text-[var(--foreground)]/60 hover:border-[var(--neon-pink)]/50 hover:text-[var(--neon-pink)]"
                 >
@@ -350,6 +370,7 @@ export default function QuestEditor({ challenge }: { challenge: Challenge }) {
           )}
 
           <a
+            data-testid="community-solutions-link"
             href={solutionsUrl(challenge)}
             target="_blank"
             rel="noreferrer"
@@ -361,7 +382,11 @@ export default function QuestEditor({ challenge }: { challenge: Challenge }) {
       </aside>
 
       {celebration && (
-        <div className="victory-overlay" onClick={() => setCelebration(null)}>
+        <div
+          data-testid="celebration-overlay"
+          className="victory-overlay"
+          onClick={() => setCelebration(null)}
+        >
           <div className="victory-card neon-panel rounded-lg max-w-sm w-full p-6 text-center mx-4">
             {celebration.sparks.map((s, i) => (
               <span
@@ -380,7 +405,10 @@ export default function QuestEditor({ challenge }: { challenge: Challenge }) {
             <p className="font-display text-lg uppercase tracking-widest text-[var(--neon-cyan)] glow-cyan mb-2">
               Access Granted
             </p>
-            <p className="credit-pop font-display text-3xl text-[var(--neon-pink)] glow-pink mb-3">
+            <p
+              data-testid="celebration-credits"
+              className="credit-pop font-display text-3xl text-[var(--neon-pink)] glow-pink mb-3"
+            >
               {celebration.credits > 0
                 ? `+${celebration.credits} credits`
                 : 'already cracked - no extra credits'}
@@ -388,6 +416,7 @@ export default function QuestEditor({ challenge }: { challenge: Challenge }) {
             <p className="text-sm text-[var(--foreground)]/80 italic mb-5">{celebration.message}</p>
             <div className="flex items-center justify-center gap-3 flex-wrap">
               <button
+                data-testid="celebration-stay-button"
                 onClick={() => setCelebration(null)}
                 className="text-sm font-display uppercase tracking-wider px-4 py-2 rounded border border-[var(--neon-cyan)]/50 text-[var(--neon-cyan)] hover:bg-[var(--neon-cyan)]/10"
               >
@@ -395,6 +424,7 @@ export default function QuestEditor({ challenge }: { challenge: Challenge }) {
               </button>
               {next && (
                 <Link
+                  data-testid="celebration-next-button"
                   href={`/quest/${next.slug}`}
                   className="text-sm font-display uppercase tracking-wider px-4 py-2 rounded border border-[var(--neon-pink)]/50 text-[var(--neon-pink)] hover:bg-[var(--neon-pink)]/10"
                 >
