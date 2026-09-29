@@ -1,6 +1,7 @@
 # TypeKnight - Neon Cyber-Cat
 
-<img width="1298" height="1317" alt="image" src="https://github.com/user-attachments/assets/0a9d7449-352a-4596-a4eb-73e8aa880227" />
+<img width="1325" height="1308" alt="image" src="https://github.com/user-attachments/assets/d8565514-35c8-40c9-b07b-4f208187dadc" />
+
 
 
 A cyberpunk arcade game for learning TypeScript's type system. A cyber-cat hacker jacks into
