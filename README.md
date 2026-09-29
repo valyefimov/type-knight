@@ -2,7 +2,7 @@
 
 <img width="1325" height="1308" alt="image" src="https://github.com/user-attachments/assets/d8565514-35c8-40c9-b07b-4f208187dadc" />
 
-
+**Demo:** [type-knight.yefimov.tech](https://type-knight.yefimov.tech/)
 
 A cyberpunk arcade game for learning TypeScript's type system. A cyber-cat hacker jacks into
 corporate servers and patches broken `any` code into strict, working types - using all 190
