@@ -1,5 +1,8 @@
 # TypeKnight - Neon Cyber-Cat
 
+<img width="1298" height="1317" alt="image" src="https://github.com/user-attachments/assets/0a9d7449-352a-4596-a4eb-73e8aa880227" />
+
+
 A cyberpunk arcade game for learning TypeScript's type system. A cyber-cat hacker jacks into
 corporate servers and patches broken `any` code into strict, working types - using all 190
 challenges from [type-challenges](https://github.com/type-challenges/type-challenges).
